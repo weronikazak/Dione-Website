@@ -1,0 +1,70 @@
+{
+  "name": "dione",
+  "displayName": "Dione",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dione.pushPages",
+        "title": "Dione: Push Changes"
+      },
+      {
+        "command": "dione.listPages",
+        "title": "Dione: List Pages"
+      },
+      {
+        "command": "dione.authenticate",
+        "title": "Dione: Login"
+      },
+      {
+        "command": "dione.codify",
+        "title": "Dione: Codify"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "dione.codify",
+          "group": "navigation",
+          "when": "editorFocus"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js",
+    "server": "node ./index.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.83.0",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.5.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
+    "openai": "^4.12.0",
+    "turndown": "^7.1.2"
+  },
+  "icon": "./public/images/dione-icon.png",
+  "pricing": "Free"
+}
