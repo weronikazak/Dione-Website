@@ -5,8 +5,9 @@ require('dotenv').config();
 const app = express();
 const port = 8000;
 
+app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
-app.use(express.static('public'));
+app.use(express.static(__dirname + "public"));
 
 const atlassianClientId = process.env.ATLASSIAN_CLIENT_ID;
 const atlassianClientSecret = process.env.ATLASSIAN_CLIENT_SECRET;
