@@ -11,7 +11,7 @@ app.use(express.static(__dirname + "public"));
 
 const atlassianClientId = process.env.ATLASSIAN_CLIENT_ID;
 const atlassianClientSecret = process.env.ATLASSIAN_CLIENT_SECRET;
-const atlassianRedirectUri = "http://localhost:8000/callback/";
+const atlassianRedirectUri = "https://dione-vsc.vercel.app/callback/";
 
 app.get("/", (req, res) => {
     res.render("index", {accessToken: "Please login again"}); // index refers to index.ejs
