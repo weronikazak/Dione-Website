@@ -22,7 +22,7 @@ const { code } = req.query;
 if (!code) {
     return res.status(400).send('Missing authorization code');
 }
-// console.log('code ' + code);
+
 try {
     const tokenResponse = await axios.post('https://auth.atlassian.com/oauth/token', {
             client_id: atlassianClientId,
