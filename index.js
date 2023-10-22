@@ -1,5 +1,6 @@
 const express = require( "express" );
 const axios = require( "axios" );
+const puppeteer = require('puppeteer');
 require('dotenv').config();
 
 const app = express();
@@ -42,6 +43,45 @@ try {
     res.status(500).send('Error logging in: ' + error);
 }
 
+});
+
+app.post('/convert', async (req, res) => {
+    const mermaidContent = req.body.mermaid;
+    
+    if (!mermaidContent) {
+        return res.status(400).send('Mermaid snippet of code is required.');
+    }
+
+    const htmlContent = ```
+<html>
+  <body>
+    Here is one mermaid diagram:
+    <pre class="mermaid">
+            ${mermaidContent}
+    </pre>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+  </body>
+</html>
+    ```;
+
+    
+
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+        const screenshot = await page.screenshot();
+        await browser.close();
+
+        res.set('Content-Type', 'image/png');
+        res.send(screenshot);
+    } catch (error) {
+        console.error('Error converting HTML to PNG:', error);
+        res.status(500).send('Failed to convert HTML to PNG.');
+    }
 });
 
 app.listen(port, () => {
