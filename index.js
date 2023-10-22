@@ -45,6 +45,63 @@ try {
 
 });
 
+// For testing purposes
+app.get('/convert', async (req, res) => {
+    const mermaidContent = `graph TD
+    A[Enter Chart Definition] --> B(Preview)
+    B --> C{decide}
+    C --> D[Keep]
+    C --> E[Edit Definition]
+    E --> B
+    D --> F[Save Image and Code]
+    F --> B`;
+    
+    if (!mermaidContent) {
+        return res.status(400).send('Mermaid snippet of code is required.');
+    }
+
+    const htmlContent = `
+<html>
+  <body>
+    <div id="mermaidContainer">
+      <pre class="mermaid">
+          ${mermaidContent}
+      </pre>
+    </div>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+  </body>
+</html>
+    `;
+
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setContent(htmlContent);
+
+        // Wait for the Mermaid script to finish rendering
+        await page.waitForSelector('#mermaidContainer svg');
+
+        await page.waitForTimeout(2000);
+
+        // Capture only the Mermaid diagram
+        const mermaidElement = await page.$('#mermaidContainer');
+        const screenshot = await mermaidElement.screenshot();
+
+        await browser.close();
+
+        // Set the headers and send the PNG image
+        res.set('Content-Disposition', 'attachment; filename=mermaid_diagram.png');
+        res.set('Content-Type', 'image/png');
+        res.send(screenshot);
+    } catch (error) {
+        console.error('Error converting Mermaid to PNG:', error);
+        res.status(500).send('Failed to convert Mermaid to PNG.');
+    }
+});
+
 app.post('/convert', async (req, res) => {
     const mermaidContent = req.body.mermaid;
     
@@ -52,33 +109,43 @@ app.post('/convert', async (req, res) => {
         return res.status(400).send('Mermaid snippet of code is required.');
     }
 
-    const htmlContent = ```
+    const htmlContent = `
 <html>
   <body>
-    Here is one mermaid diagram:
-    <pre class="mermaid">
-            ${mermaidContent}
-    </pre>
+    <div id="mermaidContainer">
+      <pre class="mermaid">
+          ${mermaidContent}
+      </pre>
+    </div>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
       mermaid.initialize({ startOnLoad: true });
     </script>
   </body>
 </html>
-    ```;
+    `;
 
     try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.setContent(htmlContent);
-        const screenshot = await page.screenshot();
+
+        // Wait for the Mermaid script to finish rendering
+        await page.waitForSelector('#mermaidContainer svg');
+
+        // Capture only the Mermaid diagram
+        const mermaidElement = await page.$('#mermaidContainer');
+        const screenshot = await mermaidElement.screenshot();
+
         await browser.close();
 
+        // Set the headers and send the PNG image
+        res.set('Content-Disposition', 'attachment; filename=mermaid_diagram.png');
         res.set('Content-Type', 'image/png');
         res.send(screenshot);
     } catch (error) {
-        console.error('Error converting HTML to PNG:', error);
-        res.status(500).send('Failed to convert HTML to PNG.');
+        console.error('Error converting Mermaid to PNG:', error);
+        res.status(500).send('Failed to convert Mermaid to PNG.');
     }
 });
 
