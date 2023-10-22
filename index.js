@@ -67,8 +67,6 @@ app.post('/convert', async (req, res) => {
 </html>
     ```;
 
-    
-
     try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
