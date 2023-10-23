@@ -137,6 +137,11 @@
         display: block;
       }
 
+      .buttonB {
+  background: #4c847c;
+  border: #4c847c;
+}
+
       .brand-icon {
         margin-top: -10px;
         margin-right: -5px;
@@ -150,11 +155,7 @@
   </head>
   <body>
     <div class="menu-bar">
-      <img
-        src=""
-        height="36"
-        class="menu-logo"
-      />
+      <img src="" height="36" class="menu-logo" />
       <!-- <i class="fas fa-icon-name icon"></i> Dione -->
       <div class="social-icons">
         <a href="https://www.linkedin.com/in/weronikawzak/" class="social-icon">
@@ -171,12 +172,21 @@
     <div class="container mt-5">
       <div class="mt-3 text-center">
         <h1 class="text-white brand">
-            <img src="https://raw.githubusercontent.com/weronikazak/weronikazak.github.io/master/images/dione.png" class="brand-icon" height="64">ione</h1>
-        <h2 class="text-white">
-            Visual Studio Code Extension integrated with Confluence to boost your productivity.
+          <img
+            src="https://raw.githubusercontent.com/weronikazak/weronikazak.github.io/master/images/dione.png"
+            class="brand-icon"
+            height="64"
+          />ione
+        </h1>
+        <h2 class="text-white">Avoiding the Greek Tragedy of Documentation</h2>
 
-        </h2>        
-          <p class="text-white"> Copy the access token below and paste it in the extension.
+        <h4 class="text-white">
+          AI Tools integrated with Atlassian Confluence to lighten the load
+        </h4>
+        <% if (typeof accessToken !== 'undefined' && accessToken){ %>
+        <br />
+        <p class="">
+          Copy the access token below and paste it in the extension.
         </p>
         <div class="copy-text">
           <input
@@ -188,6 +198,10 @@
           />
           <button><i class="fa fa-clone"></i></button>
         </div>
+        <% } else { %>
+        <br />
+        <a class="btn btn-primary btn-lg buttonB" href="https://github.com/weronikazak" role="button">Try Me Now!</a>
+        <% } %>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
