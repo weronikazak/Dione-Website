@@ -1,10 +1,10 @@
-<img src="https://github.com/weronikazak/Dione-Website/tree/main/public/images/dione-rep.png" />
+<img src="https://raw.githubusercontent.com/weronikazak/Dione-Website/main/public/images/dione-rep.png?token=GHSAT0AAAAAACJKQSDIG5274ENZTWQQHDD4ZJYCBQA" />
 
-# Dione
+# Dione Website
 
 Dione's representative page.
 
-Find the product here:
+Find the products here:
 
 - [Dione Code](https://github.com/weronikazak/Dione-VSC-Extension)
 
