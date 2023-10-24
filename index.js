@@ -1,6 +1,6 @@
-const express = require( "express" );
-const axios = require( "axios" );
-require('dotenv').config();
+const express = require("express");
+const axios = require("axios");
+require("dotenv").config();
 
 const app = express();
 const port = 8000;
@@ -14,34 +14,34 @@ const atlassianClientSecret = process.env.ATLASSIAN_CLIENT_SECRET;
 const atlassianRedirectUri = "https://dione-vsc.vercel.app/callback/";
 
 app.get("/", (req, res) => {
-    res.render("index", {accessToken: undefined}); // index refers to index.ejs
+  res.render("index", { accessToken: undefined }); // index refers to index.ejs
 });
 
-app.get('/callback', async (req, res) => {
-const { code } = req.query;
+app.get("/callback", async (req, res) => {
+  const { code } = req.query;
 
-if (!code) {
-    return res.status(400).send('Missing authorization code');
-}
+  if (!code) {
+    return res.status(400).send("Missing authorization code");
+  }
 
-try {
-    const tokenResponse = await axios.post('https://auth.atlassian.com/oauth/token', {
-            client_id: atlassianClientId,
-            client_secret: atlassianClientSecret,
-            code: code,
-            grant_type: 'authorization_code',
-            redirect_uri: atlassianRedirectUri,
-    });
+  try {
+    const tokenResponse = await axios.post(
+      "https://auth.atlassian.com/oauth/token",
+      {
+        client_id: atlassianClientId,
+        client_secret: atlassianClientSecret,
+        code: code,
+        grant_type: "authorization_code",
+        redirect_uri: atlassianRedirectUri,
+      }
+    );
 
     const accessToken = tokenResponse.data.access_token;
 
-    res.render("index", {accessToken: accessToken});
-
-    // res.send(`Login successful. </b> Your access token: </b>${accessToken}`);
-} catch (error) {
-    res.status(500).send('Error logging in: ' + error);
-}
-
+    res.render("index", { accessToken: accessToken });
+  } catch (error) {
+    res.status(500).send("Error logging in: " + error);
+  }
 });
 
 app.listen(port, () => {
